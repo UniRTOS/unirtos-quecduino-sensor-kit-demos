@@ -1,0 +1,3 @@
+config QAPP_KY025_ADC_DEMO
+    bool "KY-025 magnetic reed switch ADC demo"
+    default n

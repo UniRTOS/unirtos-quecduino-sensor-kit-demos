@@ -1,0 +1,35 @@
+menu "KY008 laser transmitter demo"
+
+config QAPP_KY008_DEMO
+    bool "KY008 laser transmitter demo"
+    default n
+
+if QAPP_KY008_DEMO
+
+config QAPP_KY008_PIN_NUM
+    int "KY008 signal pin number"
+    range 1 105
+    default 31
+    help
+        Physical pin connected to the KY008 signal input. Change this value
+        according to the board schematic or wiring.
+
+config QAPP_KY008_ACTIVE_LEVEL
+    int "Laser active level"
+    range 0 1
+    default 1
+    help
+        1 means the laser turns on when the GPIO outputs high level.
+        0 means the laser turns on when the GPIO outputs low level.
+
+config QAPP_KY008_INTERVAL_MS
+    int "Laser blink interval in milliseconds"
+    range 1 60000
+    default 2000
+    help
+        The demo keeps blinking forever. This value is used for both the on
+        duration and the off duration of each blink cycle.
+
+endif
+
+endmenu

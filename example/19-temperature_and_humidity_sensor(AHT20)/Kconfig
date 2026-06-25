@@ -1,0 +1,5 @@
+config QAPP_AHT20_DEMO
+    bool "AHT20 temperature and humidity demo"
+    select QOSA_IIC_FUNC
+    select QOSA_PINCTRL_FUNC
+    default n

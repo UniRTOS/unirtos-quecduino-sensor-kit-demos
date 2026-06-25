@@ -1,0 +1,26 @@
+config QAPP_KY032_DEMO
+    bool "KY-032 obstacle avoidance demo"
+    default n
+
+if QAPP_KY032_DEMO
+
+config QAPP_KY032_PIN_NUM
+    int "KY-032 digital output pin number"
+    range 0 127
+    default 23
+
+config QAPP_KY032_ACTIVE_LEVEL
+    int "KY-032 obstacle active level"
+    range 0 1
+    default 0
+
+config QAPP_KY032_SAMPLE_PERIOD_MS
+    int "KY-032 sample period (ms)"
+    range 20 5000
+    default 100
+
+config QAPP_KY032_USE_INTERRUPT
+	bool "Use GPIO interrupt mode"
+	default n
+
+endif
