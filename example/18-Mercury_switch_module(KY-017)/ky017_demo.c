@@ -1,3 +1,11 @@
+"""
+@file      : ky017_demo.c
+@author    : Lionel Zhang (lionel.zhang@example.com)
+@brief     : UniRTOS Based on KY-017 Mercury Switch Example
+@version   : 0.1
+@date      : 2026-06-25
+@copyright : Copyright (c) 2026
+"""
 #include "qcm_proj_config.h"
 #include "qosa_log.h"
 #include "qosa_gpio.h"
@@ -7,6 +15,7 @@
 
 #define QOS_LOG_TAG LOG_TAG_DEMO
 
+/* KY-017 水银开关输入和联动输出引脚，支持编译时重定义。 */
 #ifndef KY017_SENSOR_PIN
 #define KY017_SENSOR_PIN QOSA_PIN_31
 #endif
@@ -32,16 +41,19 @@ static qosa_task_t g_ky017_task = QOSA_NULL;
 static qosa_pin_cfg_t g_ky017_sensor_pin_cfg;
 static qosa_pin_cfg_t g_ky017_output_pin_cfg;
 
+/* 根据输出有效电平计算无效电平。 */
 static qosa_gpio_level_e ky017_get_inactive_level(qosa_gpio_level_e active_level)
 {
 	return (active_level == QOSA_GPIO_LEVEL_HIGH) ? QOSA_GPIO_LEVEL_LOW : QOSA_GPIO_LEVEL_HIGH;
 }
 
+/* 判断当前传感器电平是否达到触发条件。 */
 static qosa_bool_t ky017_is_triggered(qosa_gpio_level_e level)
 {
 	return (level == KY017_TRIGGER_LEVEL) ? QOSA_TRUE : QOSA_FALSE;
 }
 
+/* 初始化 KY-017 示例使用的输入或输出 GPIO。 */
 static int ky017_gpio_init(qosa_pin_num_e pin_num,
 			   qosa_gpio_direction_e direction,
 			   qosa_gpio_pull_e pull,
@@ -75,6 +87,7 @@ static int ky017_gpio_init(qosa_pin_num_e pin_num,
 	return 0;
 }
 
+/* 根据触发状态控制联动输出。 */
 static void ky017_set_output(qosa_bool_t active)
 {
 	qosa_gpio_level_e level = ky017_get_inactive_level(KY017_OUTPUT_ACTIVE_LEVEL);
@@ -87,6 +100,7 @@ static void ky017_set_output(qosa_bool_t active)
 	(void)qosa_gpio_set_level(g_ky017_output_pin_cfg.gpio_num, level);
 }
 
+/* 水银开关轮询任务，周期读取倾斜状态并控制输出。 */
 static void ky017_demo_task(void *argv)
 {
 	qosa_gpio_level_e sensor_level = QOSA_GPIO_LEVEL_LOW;
@@ -125,6 +139,7 @@ static void ky017_demo_task(void *argv)
 	}
 }
 
+/* KY-017 示例初始化入口，配置 GPIO 并创建任务。 */
 static void ky017_demo_init(void)
 {
 	int ret;
@@ -176,4 +191,5 @@ static void ky017_demo_init(void)
 		  KY017_SENSOR_PULL);
 }
 
+/* 将 KY-017 水银开关示例注册到 UniRTOS 应用启动流程。 */
 UNIRTOS_APP_EXPORT(200, "ky017_demo", ky017_demo_init);

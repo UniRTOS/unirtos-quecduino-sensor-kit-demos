@@ -1,6 +1,6 @@
 # 模拟压电陶瓷震动模块
 
-## **一、** **模块介绍**
+## **模块介绍**
 
 这个传感器是基于压电陶瓷片模拟震动的传感器，它利用压电陶瓷给电信号产生震动的反变换过程。当压电陶瓷片震动时，该传感器信号端就会产生电信号。该模块兼容各种单片机控制板，如arduino系列单片机。模块包含2种接口，任你选择。一种是间距为2.54mm的防反接白色端子，使用时，我们可以在单片机上堆叠一个传感器扩展板。模块和自带导线连接，然后连接在传感器扩展板上，简单方便。另一种是间距为2.54mm的排针接口，利用公对母杜邦线，可直接连接在单片机上。
 
@@ -10,7 +10,7 @@
 
 **作为震动检测（正压电效应）**：当模块受到机械震动 / 敲击时，压电陶瓷片产生微弱电信号，由信号端输出，开发板通过 ADC 采集即可检测震动强度。
 
-## 二、 连接示例
+## 连接示例
 
 根据表格指导，将外设与开发板一一对应连接
 
@@ -24,34 +24,46 @@
 
 ### 1. 开发环境搭建
 
-参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境和完成基础开发流程。
+参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境并完成基本开发流程。
 
-### 2. 项目结构
+### 2. 代码拉取
+
+```
+# 拉取示例仓库
+unirtos-cli new -r unirtos-quecduino-sensor-kit-demos
+# 进入该项目
+cd unirtos-quecduino-sensor-kit-demos-1.0.0/example/20-Simulated_Piezoelectric_Ceramic_Vibration_Sensor
+```
+
+### 3. 项目结构
 
 ```text
-touch_demos/
-├── CMakeLists.txt      # CMake 构建配置
+20-Simulated_Piezoelectric_Ceramic_Vibration_Sensor/
+├── CMakeLists.txt      # Vibration Sensor Demo 局部构建配置
+├── env_config.json     # UniRTOS 工程环境配置
 ├── touch_demo.c        # 振动传感器 ADC 轮询报警示例源码
 └── README.md           # 本文件
 ```
 
-### 3. 构建项目
+### 4. 构建项目
 
-当前目录中的示例源码和子目录 CMakeLists 已就绪，但当前仓库顶层入口尚未将 touch_demos 接入统一菜单配置和条件构建。
+拉取SDK与依赖库
 
-如需作为内置应用参与整仓构建，建议补齐以下接入项：
+```
+unirtos-cli env-setup
+```
+在 PowerShell 窗口执行固件编译命令：
 
-- 在 qos_applications/Kconfig 中新增 touch demo 对应配置项，并通过 orsource 引入目录级 Kconfig
-- 在 qos_applications/CMakeLists.txt 中新增对应的 add_subdirectory_if_exist 条件编译入口
-- 在菜单配置中使能新增的 touch demo 选项
+```
+unirtos-cli build -m EG800ZCN_LA -v EG800ZCNLAR01A01_OCPU_20260626
+```
+等待编译结束后，PowerShell 窗口末尾会提示固件编译结果：
 
-完成接入并使能后，可在 UniRTOS 根目录执行类似命令进行构建：
-
-```bash
-unirtos make EG800ZCN_LA EG800ZCNLAR01A01M04_BETA_OCPU_20260511
+```
+SUCCESS: Unirtos project built successfully!
 ```
 
-### 4. 日志展示
+### 5. 日志展示
 
 初始化成功后，可在日志中看到类似输出：
 

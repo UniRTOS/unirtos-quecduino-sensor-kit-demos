@@ -1,24 +1,32 @@
-// QOSA core definition header
+"""
+@file      : unir_rgb_demo.c
+@author    : Lionel Zhang (lionel.zhang@example.com)
+@brief     : UniRTOS Based on RGB LED Example
+@version   : 0.1
+@date      : 2026-06-25
+@copyright : Copyright (c) 2026
+"""
+// QOSA 核心定义头文件
 #include "qosa_def.h"
-// Include QOSA system API header
+// QOSA 系统 API 头文件
 #include "qosa_sys.h"
-// Include QOSA GPIO and pinctrl headers
+// QOSA GPIO 和引脚复用控制头文件
 #include "qosa_gpio.h"
 #include "qosa_pinctrl.h"
-// Include QOSA log system header file
+// QOSA 日志系统头文件
 #include "qosa_log.h"
 
-// Define log information
+// 定义日志标签
 #define QOS_LOG_TAG   LOG_TAG_DEMO
 
 #include "unirtos_app_init_registry.h"
 
-// Define stack size of RGB control task
+// 定义 RGB 控制任务栈大小
 #define UNIR_RGB_DEMO_TASK_STACK_SIZE 1024
-// Define RGB control task priority as normal
+// 定义 RGB 控制任务优先级为普通优先级
 #define UNIR_RGB_DEMO_TASK_PRIO QOSA_PRIORITY_NORMAL
 
-// Declare global task handle and initialize as NULL
+// RGB 示例任务句柄，初始为空
 static qosa_task_t g_unir_rgb_demo_task = QOSA_NULL;
 
 // ========== 请根据实际电路修改下面的引脚号 ==========
@@ -32,6 +40,7 @@ static qosa_task_t g_unir_rgb_demo_task = QOSA_NULL;
 
 static void unir_rgb_demo_process(void *ctx)
 {
+    // 分别保存红、绿、蓝三个通道的引脚配置
     qosa_pin_cfg_t red_pin_cfg;
     qosa_pin_cfg_t green_pin_cfg;
     qosa_pin_cfg_t blue_pin_cfg;
@@ -83,6 +92,7 @@ void unir_rgb_init(void)
     QLOGV("enter rgb led demo !!!");
     if (g_unir_rgb_demo_task == QOSA_NULL)
     {
+        // 创建 RGB 控制任务，在任务中循环显示红、绿、蓝三色
         qosa_task_create(
             &g_unir_rgb_demo_task,
             UNIR_RGB_DEMO_TASK_STACK_SIZE,
@@ -93,4 +103,5 @@ void unir_rgb_init(void)
     }
 }
 
+// 将 RGB LED 示例注册到 UniRTOS 应用启动流程
 UNIRTOS_APP_EXPORT(700, "unir_rgb_demo", unir_rgb_init);

@@ -1,3 +1,11 @@
+"""
+@file      : ky020_demo.c
+@author    : Lionel Zhang (lionel.zhang@example.com)
+@brief     : UniRTOS Based on KY-020 Inclination Switch Example
+@version   : 0.1
+@date      : 2026-06-25
+@copyright : Copyright (c) 2026
+"""
 #include "qcm_proj_config.h"
 #include "qosa_log.h"
 #include "qosa_gpio.h"
@@ -7,6 +15,7 @@
 
 #define QOS_LOG_TAG LOG_TAG_DEMO
 
+/* KY-020 倾斜开关输入引脚，默认可在编译时重定义。 */
 #ifndef KY020_SENSOR_PIN
 #define KY020_SENSOR_PIN QOSA_PIN_31
 #endif
@@ -31,16 +40,19 @@ static qosa_task_t g_ky020_demo_task = QOSA_NULL;
 static qosa_pin_cfg_t g_ky020_sensor_pin_cfg;
 static qosa_pin_cfg_t g_ky020_led_pin_cfg;
 
+/* 根据 LED 有效电平计算熄灭电平。 */
 static qosa_gpio_level_e ky020_get_inactive_level(qosa_gpio_level_e active_level)
 {
 	return (active_level == QOSA_GPIO_LEVEL_HIGH) ? QOSA_GPIO_LEVEL_LOW : QOSA_GPIO_LEVEL_HIGH;
 }
 
+/* 判断当前输入电平是否表示倾斜。 */
 static qosa_bool_t ky020_is_tilted(qosa_gpio_level_e level)
 {
 	return (level == KY020_TRIGGER_LEVEL) ? QOSA_TRUE : QOSA_FALSE;
 }
 
+/* 根据倾斜状态控制 LED。 */
 static void ky020_set_led(qosa_bool_t active)
 {
 	qosa_gpio_level_e led_level = ky020_get_inactive_level(KY020_OUTPUT_ACTIVE_LEVEL);
@@ -53,6 +65,7 @@ static void ky020_set_led(qosa_bool_t active)
 	(void)qosa_gpio_set_level(g_ky020_led_pin_cfg.gpio_num, led_level);
 }
 
+/* 初始化 KY-020 示例使用的 GPIO。 */
 static int ky020_prepare_gpio(qosa_pin_num_e pin_num,
 						   qosa_gpio_direction_e direction,
 						   qosa_gpio_pull_e pull,
@@ -86,6 +99,7 @@ static int ky020_prepare_gpio(qosa_pin_num_e pin_num,
 	return 0;
 }
 
+/* KY-020 后台任务，周期读取倾斜状态并控制 LED。 */
 static void ky020_demo_task(void *argv)
 {
 	qosa_gpio_level_e sensor_level = QOSA_GPIO_LEVEL_HIGH;
@@ -124,6 +138,7 @@ static void ky020_demo_task(void *argv)
 	}
 }
 
+/* KY-020 示例初始化入口，配置输入和 LED 后创建任务。 */
 static void ky020_demo_init(void)
 {
 	int ret;
@@ -172,4 +187,5 @@ static void ky020_demo_init(void)
 	QLOGI("ky020 demo init done");
 }
 
+/* 将 KY-020 倾斜开关示例注册到 UniRTOS 应用启动流程。 */
 UNIRTOS_APP_EXPORT(220, "ky020_demo", ky020_demo_init);

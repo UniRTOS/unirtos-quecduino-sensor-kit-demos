@@ -1,3 +1,11 @@
+"""
+@file      : jy005_demo.c
+@author    : Lionel Zhang (lionel.zhang@example.com)
+@brief     : UniRTOS Based on JY005 Digital Tube Example
+@version   : 0.1
+@date      : 2026-06-25
+@copyright : Copyright (c) 2026
+"""
 #include "qcm_proj_config.h"
 #include "qosa_gpio.h"
 #include "qosa_log.h"
@@ -7,6 +15,7 @@
 
 #define QOS_LOG_TAG LOG_TAG_DEMO
 
+/* JY005 一位数码管示例参数：段数、任务配置和显示间隔。 */
 #define JY005_SEGMENT_COUNT 8U
 #define JY005_TASK_STACK_SIZE 2048U
 #define JY005_TASK_PRIORITY QOSA_PRIORITY_NORMAL
@@ -46,10 +55,13 @@
 
 typedef struct
 {
+	/* 数码管段对应的 PIN 编号。 */
 	qosa_pin_num_e pin_num;
+	/* PIN 映射后的 GPIO 编号。 */
 	qosa_gpio_num_e gpio_num;
 } jy005_segment_gpio_t;
 
+/* A、B、C、D、E、F、G、DP 八个段对应的默认引脚。 */
 static const qosa_pin_num_e g_jy005_segment_pins[JY005_SEGMENT_COUNT] = {
 	JY005_SEG_A_PIN,
 	JY005_SEG_B_PIN,
@@ -61,6 +73,7 @@ static const qosa_pin_num_e g_jy005_segment_pins[JY005_SEGMENT_COUNT] = {
 	JY005_SEG_DP_PIN,
 };
 
+/* 数码管 0-9 字形表，0 表示点亮该段，1 表示熄灭该段。 */
 static const qosa_uint8_t g_jy005_num_table[10][JY005_SEGMENT_COUNT] = {
 	{0, 0, 0, 0, 1, 0, 0, 0},
 	{0, 1, 0, 1, 1, 0, 1, 1},
@@ -77,6 +90,7 @@ static const qosa_uint8_t g_jy005_num_table[10][JY005_SEGMENT_COUNT] = {
 static jy005_segment_gpio_t g_jy005_segments[JY005_SEGMENT_COUNT];
 static qosa_task_t g_jy005_task = NULL;
 
+/* 初始化单个数码管段对应的 GPIO。 */
 static int jy005_segment_gpio_init(qosa_pin_num_e pin_num, jy005_segment_gpio_t *segment)
 {
 	qosa_pin_cfg_t pin_cfg;
@@ -112,6 +126,7 @@ static int jy005_segment_gpio_init(qosa_pin_num_e pin_num, jy005_segment_gpio_t 
 	return 0;
 }
 
+/* 初始化数码管所有段 GPIO。 */
 static int jy005_gpio_init(void)
 {
 	qosa_uint8_t segment_index;
@@ -127,6 +142,7 @@ static int jy005_gpio_init(void)
 	return 0;
 }
 
+/* 清空显示，关闭所有段。 */
 static void jy005_clear_display(void)
 {
 	qosa_uint8_t segment_index;
@@ -137,6 +153,7 @@ static void jy005_clear_display(void)
 	}
 }
 
+/* 根据字形表显示一个 0-9 的数字。 */
 static void jy005_display_num(int number)
 {
 	qosa_uint8_t segment_index;
@@ -154,6 +171,7 @@ static void jy005_display_num(int number)
 	}
 }
 
+/* 数码管演示任务，循环显示 0 到 9。 */
 static void jy005_demo_task(void *argv)
 {
 	(void)argv;
@@ -195,6 +213,7 @@ static void jy005_demo_task(void *argv)
 	}
 }
 
+/* JY005 数码管示例初始化入口，负责创建显示任务。 */
 static void jy005_demo_init(void)
 {
 	int ret;
@@ -221,4 +240,5 @@ static void jy005_demo_init(void)
 	QLOGI("jy005 demo task created");
 }
 
+/* 将 JY005 数码管示例注册到 UniRTOS 应用启动流程。 */
 UNIRTOS_APP_EXPORT(200, "jy005_demo", jy005_demo_init);

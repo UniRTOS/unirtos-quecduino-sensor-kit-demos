@@ -1,3 +1,11 @@
+"""
+@file      : light.c
+@author    : Lionel Zhang (lionel.zhang@example.com)
+@brief     : UniRTOS Based on KY-018 Photoresistor Example
+@version   : 0.1
+@date      : 2026-06-25
+@copyright : Copyright (c) 2026
+"""
 #include "qcm_proj_config.h"
 #include "qosa_adc.h"
 #include "qosa_gpio.h"
@@ -228,4 +236,5 @@ static void light_sensor_demo_init(void)
 	QLOGI("KY-018 light sensor demo started");
 }
 
+/* 将 KY-018 光敏传感器示例注册到 UniRTOS 应用启动流程。 */
 UNIRTOS_APP_EXPORT(200, "ky018_light_demo", light_sensor_demo_init);

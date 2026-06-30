@@ -1,6 +1,6 @@
 # 光敏电阻模块
 
-## **一、** **模块介绍**
+## **模块介绍**
 
 光敏电阻传感器是一种能够将光信号转换为电信号的传感器，其阻值会随着光照强度的变化而改变。在许多实际应用中，如自动照明系统、环境光检测等，光敏电阻传感器发挥着重要作用。 EG800Z Duino开发板具有丰富的外设资源，能够方便地与光敏电阻传感器结合使用，实现对光照强度的检测和处理。
 
@@ -18,7 +18,7 @@
 
 **光照越强，电阻越小，电压越低；光照越弱，电阻越大，电压越高。**
 
-## 二、连接示例
+## 连接示例
 
 根据表格和图片指导，将外设与开发板一一对应连接
 
@@ -32,25 +32,45 @@
 ## 快速上手
 
 ### 1. 开发环境搭建
-参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境和完成基础开发流程。
+参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境并完成基本开发流程。
 
-### 2. 项目结构
+### 2. 代码拉取
+
+```
+# 拉取示例仓库
+unirtos-cli new -r unirtos-quecduino-sensor-kit-demos
+# 进入该项目
+cd unirtos-quecduino-sensor-kit-demos-1.0.0/example/10-photoresistor(KY-018)
+```
+
+### 3. 项目结构
 
 ```text
 10-photoresistor(KY-018)/
-├── CMakeLists.txt      # CMake 构建配置
+├── CMakeLists.txt      # KY-018 Demo 局部构建配置
+├── env_config.json     # UniRTOS 工程环境配置
 ├── light.c             # KY-018 光敏传感器示例源代码
 └── README.md           # 本文件
 ```
 
-### 3. 构建项目
-当前目录中的示例源码和子目录 CMakeLists 已就绪。完成应用接入并使能对应配置后，可在 UniRTOS 根目录执行类似命令进行构建：
+### 4. 构建项目
+拉取SDK与依赖库
 
-```text
-unirtos make EG800ZCN_LA EG800ZCNLAR01A01M04_BETA_OCPU_20260511
+```
+unirtos-cli env-setup
+```
+在 PowerShell 窗口执行固件编译命令：
+
+```
+unirtos-cli build -m EG800ZCN_LA -v EG800ZCNLAR01A01_OCPU_20260626
+```
+等待编译结束后，PowerShell 窗口末尾会提示固件编译结果：
+
+```
+SUCCESS: Unirtos project built successfully!
 ```
 
-### 4. 日志展示
+### 5. 日志展示
 初始化成功后，可在日志中看到类似输出：
 
 ```text

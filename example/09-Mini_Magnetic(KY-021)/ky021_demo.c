@@ -1,3 +1,11 @@
+"""
+@file      : ky021_demo.c
+@author    : Lionel Zhang (lionel.zhang@example.com)
+@brief     : UniRTOS Based on KY-021 Mini Magnetic Example
+@version   : 0.1
+@date      : 2026-06-25
+@copyright : Copyright (c) 2026
+"""
 #include "qcm_proj_config.h"
 #include "qosa_log.h"
 #include "qosa_gpio.h"
@@ -7,18 +15,18 @@
 
 #define QOS_LOG_TAG LOG_TAG_DEMO
 
-/* Default controller pins: GPIO31 input, GPIO30 linked output */
+/* 默认控制引脚：一路传感器输入，一路联动输出。 */
 #define KY021_SENSOR_PIN QOSA_PIN_23
 #define KY021_OUTPUT_PIN QOSA_PIN_22
 
-/* LOW means magnetic field detected, HIGH means released */
+/* 低电平表示检测到磁场，高电平表示释放。 */
 #define KY021_TRIGGER_LEVEL       QOSA_GPIO_LEVEL_LOW
 #define KY021_OUTPUT_ACTIVE_LEVEL QOSA_GPIO_LEVEL_HIGH
 
-/* Polling interval in milliseconds */
+/* 轮询间隔，单位毫秒。 */
 #define KY021_POLL_INTERVAL_MS 500
 
-/* Task parameters */
+/* 后台任务参数。 */
 #define KY021_TASK_STACK_SIZE 4096
 #define KY021_TASK_PRIORITY   100
 #define KY021_TASK_NAME       "ky021_task"
@@ -28,7 +36,7 @@ static qosa_pin_cfg_t ky021_sensor_pin_cfg;
 static qosa_pin_cfg_t ky021_output_pin_cfg;
 
 /**
- * @brief Convert active output level to its inactive counterpart
+ * @brief 将输出有效电平转换为无效电平。
  */
 static qosa_gpio_level_e ky021_get_inactive_level(qosa_gpio_level_e active_level)
 {
@@ -36,7 +44,7 @@ static qosa_gpio_level_e ky021_get_inactive_level(qosa_gpio_level_e active_level
 }
 
 /**
- * @brief Return whether current sensor level matches trigger level
+ * @brief 判断当前传感器电平是否达到触发条件。
  */
 static qosa_bool_t ky021_is_triggered(qosa_gpio_level_e level)
 {
@@ -44,7 +52,7 @@ static qosa_bool_t ky021_is_triggered(qosa_gpio_level_e level)
 }
 
 /**
- * @brief Drive linked output according to trigger state
+ * @brief 根据触发状态控制联动输出。
  */
 static void ky021_set_output(qosa_bool_t active)
 {
@@ -59,7 +67,7 @@ static void ky021_set_output(qosa_bool_t active)
 }
 
 /**
- * @brief Initialize one GPIO pin using its default mux configuration
+ * @brief 使用默认复用配置初始化一个 GPIO 引脚。
  */
 static int ky021_gpio_init(qosa_pin_num_e pin_num,
                            qosa_gpio_direction_e direction,
@@ -95,7 +103,7 @@ static int ky021_gpio_init(qosa_pin_num_e pin_num,
 }
 
 /**
- * @brief KY-021 sensor polling task with linked output control
+ * @brief KY-021 传感器轮询任务，并同步控制联动输出。
  */
 static void ky021_task_entry(void *argv)
 {
@@ -142,7 +150,7 @@ static void ky021_task_entry(void *argv)
 }
 
 /**
- * @brief Initialize sensor/input GPIO and linked output GPIO
+ * @brief 初始化传感器输入 GPIO 和联动输出 GPIO。
  */
 static void ky021_demo_init(void)
 {
@@ -192,4 +200,5 @@ static void ky021_demo_init(void)
           ky021_output_pin_cfg.pin_num);
 }
 
+/* 将 KY-021 小型磁传感器示例注册到 UniRTOS 应用启动流程。 */
 UNIRTOS_APP_EXPORT(200, "ky021_demo", ky021_demo_init);

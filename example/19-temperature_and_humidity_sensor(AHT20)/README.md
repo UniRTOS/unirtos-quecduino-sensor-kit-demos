@@ -1,6 +1,6 @@
 # 温湿度传感器
 
-## **一、** **模块介绍**
+## **模块介绍**
 
 温湿度传感器作为常见的传感器之一，是一种装有湿敏和热敏元件，能够用来测量温度和湿度的传感器装置。其工作原理主要基于热敏电阻和湿敏电阻的特性，通过测量电阻值并转换成电压信号输出，实现对环境温湿度的准确监测。
 
@@ -8,7 +8,7 @@
 
 模块通过内部热敏元件与湿敏元件采集环境数据，经芯片校准后以**I2C 数字信号**输出，开发板通过 I2C 总线读取温度和湿度数值。
 
-## 二、 连接示例
+## 连接示例
 
 根据表格和图片指导，将外设与开发板一一对应连接
 
@@ -23,27 +23,47 @@
 
 ### 1. 开发环境搭建
 
-参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境和完成基础开发流程。
+参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境并完成基本开发流程。
 
-### 2. 项目结构
+### 2. 代码拉取
+
+```
+# 拉取示例仓库
+unirtos-cli new -r unirtos-quecduino-sensor-kit-demos
+# 进入该项目
+cd unirtos-quecduino-sensor-kit-demos-1.0.0/example/19-temperature_and_humidity_sensor(AHT20)
+```
+
+### 3. 项目结构
 
 ```text
-aht20_demos/
-├── aht20_demo.c       # AHT20 温湿度传感器示例源代码
-├── CMakeLists.txt     # CMake 构建配置
-├── Kconfig            # 示例配置开关
-└── README.md          # 本文件
+19-temperature_and_humidity_sensor(AHT20)/
+├── CMakeLists.txt      # AHT20 Demo 局部构建配置
+├── env_config.json     # UniRTOS 工程环境配置
+├── Kconfig             # 示例配置开关
+├── aht20_demo.c        # AHT20 温湿度传感器示例源代码
+└── README.md           # 本文件
 ```
 
-### 3. 构建项目
+### 4. 构建项目
 
-当前目录中的示例源码和子目录 CMakeLists 已就绪；如需作为内置应用参与整仓构建，需要在菜单配置中使能 `QAPP_AHT20_DEMO`。完成接入并使能后，可在 UniRTOS 根目录执行类似命令进行构建：
+拉取SDK与依赖库
 
-```bash
-unirtos make EG800ZCN_LA EG800ZCNLAR01A01M04_BETA_OCPU_20260511
+```
+unirtos-cli env-setup
+```
+在 PowerShell 窗口执行固件编译命令：
+
+```
+unirtos-cli build -m EG800ZCN_LA -v EG800ZCNLAR01A01_OCPU_20260626
+```
+等待编译结束后，PowerShell 窗口末尾会提示固件编译结果：
+
+```
+SUCCESS: Unirtos project built successfully!
 ```
 
-### 4. 日志展示
+### 5. 日志展示
 
 初始化成功后，可在日志中看到类似输出：
 

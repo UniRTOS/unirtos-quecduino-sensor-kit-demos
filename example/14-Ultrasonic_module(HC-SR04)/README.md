@@ -1,6 +1,6 @@
 # 超声波模块
 
-## **一、** **模块介绍**
+## **模块介绍**
 
 HC-SR04 的工作流程由 “触发信号” 启动，通过 “回响信号” 反馈距离，具体步骤如下：
 
@@ -33,9 +33,9 @@ HC-SR04 的工作流程由 “触发信号” 启动，通过 “回响信号”
 
  
 
-## **二、** **连接示例**
+## **连接示例**
 
-根据表格和图片指导，将外设与开发板一一对应连接
+根据表格指导，将外设与开发板一一对应连接
 
 | **外设**           | **模块** |
 | ------------------ | -------- |
@@ -48,26 +48,46 @@ HC-SR04 的工作流程由 “触发信号” 启动，通过 “回响信号”
 
 ### 1. 开发环境搭建
 
-参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境和完成基础开发流程。
+参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境并完成基本开发流程。
 
-### 2. 项目结构
+### 2. 代码拉取
+
+```
+# 拉取示例仓库
+unirtos-cli new -r unirtos-quecduino-sensor-kit-demos
+# 进入该项目
+cd unirtos-quecduino-sensor-kit-demos-1.0.0/example/14-Ultrasonic_module(HC-SR04)
+```
+
+### 3. 项目结构
 
 ```text
-hc_sr04_demos/
-├── CMakeLists.txt      # CMake 构建配置
+14-Ultrasonic_module(HC-SR04)/
+├── CMakeLists.txt      # HC-SR04 Demo 局部构建配置
+├── env_config.json     # UniRTOS 工程环境配置
 ├── hcsr04_demo.c       # HC-SR04 超声波测距示例源代码
 └── README.md           # 本文件
 ```
 
-### 3. 构建项目
+### 4. 构建项目
 
-当前目录中的示例源码和子目录 CMakeLists 已就绪；如果希望作为内置应用参与整仓构建，需要先按照 `qos_applications` 下 demo 的接入规则，在应用总入口中补充对应目录和配置开关。完成接入后，可在 UniRTOS 根目录执行类似命令进行构建：
+拉取SDK与依赖库
 
-```bash
-unirtos make EG800ZCN_LA EG800ZCNLAR01A01M04_BETA_OCPU_20260511
+```
+unirtos-cli env-setup
+```
+在 PowerShell 窗口执行固件编译命令：
+
+```
+unirtos-cli build -m EG800ZCN_LA -v EG800ZCNLAR01A01_OCPU_20260626
+```
+等待编译结束后，PowerShell 窗口末尾会提示固件编译结果：
+
+```
+SUCCESS: Unirtos project built successfully!
 ```
 
-### 4. 日志展示
+### 5. 日志展示
 
 初始化成功后，可在日志中看到类似输出：
 

@@ -1,3 +1,11 @@
+"""
+@file      : magic_demo.c
+@author    : Lionel Zhang (lionel.zhang@example.com)
+@brief     : UniRTOS Based on KY-027 Magic Aura Module Example
+@version   : 0.1
+@date      : 2026-06-25
+@copyright : Copyright (c) 2026
+"""
 #include "qcm_proj_config.h"
 #include "qosa_log.h"
 #include "qosa_gpio.h"
@@ -23,16 +31,19 @@ static qosa_task_t g_tilt_switch_demo_task = QOSA_NULL;
 static qosa_pin_cfg_t g_tilt_switch_sensor_pin_cfg;
 static qosa_pin_cfg_t g_tilt_switch_output_pin_cfg;
 
+/* 根据输出有效电平计算无效电平。 */
 static qosa_gpio_level_e tilt_switch_get_inactive_level(qosa_gpio_level_e active_level)
 {
 	return (active_level == QOSA_GPIO_LEVEL_HIGH) ? QOSA_GPIO_LEVEL_LOW : QOSA_GPIO_LEVEL_HIGH;
 }
 
+/* 判断传感器电平是否表示发生倾斜。 */
 static qosa_bool_t tilt_switch_is_tilted(qosa_gpio_level_e level)
 {
 	return (level == TILT_SWITCH_TRIGGER_LEVEL) ? QOSA_TRUE : QOSA_FALSE;
 }
 
+/* 根据倾斜状态控制联动输出。 */
 static void tilt_switch_set_output(qosa_bool_t active)
 {
 	qosa_gpio_level_e output_level = tilt_switch_get_inactive_level(TILT_SWITCH_OUTPUT_ACTIVE);
@@ -45,6 +56,7 @@ static void tilt_switch_set_output(qosa_bool_t active)
 	(void)qosa_gpio_set_level(g_tilt_switch_output_pin_cfg.gpio_num, output_level);
 }
 
+/* 初始化一个输入或输出 GPIO，并完成引脚复用配置。 */
 static int tilt_switch_prepare_gpio(qosa_pin_num_e pin_num,
 								qosa_gpio_direction_e direction,
 								qosa_gpio_pull_e pull,
@@ -81,6 +93,7 @@ static int tilt_switch_prepare_gpio(qosa_pin_num_e pin_num,
 	return 0;
 }
 
+/* 倾斜检测任务，周期读取传感器并更新输出状态。 */
 static void tilt_switch_demo_task(void *argv)
 {
 	qosa_gpio_level_e sensor_level = QOSA_GPIO_LEVEL_LOW;
@@ -119,6 +132,7 @@ static void tilt_switch_demo_task(void *argv)
 	}
 }
 
+/* KY-027 魔术光杯示例初始化入口。 */
 static void magic_halo_demo_init(void)
 {
 	int ret;
@@ -166,4 +180,5 @@ static void magic_halo_demo_init(void)
 	QLOGI("tilt switch demo init done");
 }
 
+/* 将 KY-027 魔术光杯示例注册到 UniRTOS 应用启动流程。 */
 UNIRTOS_APP_EXPORT(260, "magic_halo_demo", magic_halo_demo_init);

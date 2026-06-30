@@ -1,6 +1,6 @@
 # 迷你磁簧模块
 
-## **一、** **模块介绍**
+## **模块介绍**
 
 迷你磁簧，全称**迷你磁簧开关（干簧管模块）**，是一种利用磁场控制通断的无源开关组件，这类磁性感应器件一般作为门磁检测、位置检测、限位触发使用，目前已经广泛用于嵌入式设备、智能硬件、创客 DIY 场景；它能够在磁场靠近时导通、磁场远离时断开，拥有体积小、响应快、无机械触点磨损、低功耗、即插即用、适配 3.3V/5V 低压环境、可直接接 GPIO 检测、使用寿命长等优点。
 
@@ -12,7 +12,7 @@
 
 模块本质是一个受磁场控制的开关。当磁铁靠近模块时，玻璃管内的磁簧片被磁化并相互吸引接触，电路导通；当磁铁远离时，簧片失去磁性并依靠弹性分离，电路断开，以此实现磁场触发的开关信号输出。
 
-## 二、 连接示例
+## 连接示例
 
 根据表格和图片指导，将外设与开发板一一对应连接
 
@@ -27,26 +27,46 @@
 
 ### 1. 开发环境搭建
 
-参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境和完成基础开发流程。
+参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境并完成基本开发流程。
 
-### 2. 项目结构
+### 2. 代码拉取
+
+```
+# 拉取示例仓库
+unirtos-cli new -r unirtos-quecduino-sensor-kit-demos
+# 进入该项目
+cd unirtos-quecduino-sensor-kit-demos-1.0.0/example/09-Mini_Magnetic(KY-021)
+```
+
+### 3. 项目结构
 
 ```text
-ky021_demos/
-├── CMakeLists.txt      # CMake 构建配置
+09-Mini_Magnetic(KY-021)/
+├── CMakeLists.txt      # KY-021 Demo 局部构建配置
+├── env_config.json     # UniRTOS 工程环境配置
 ├── ky021_demo.c        # KY-021 迷你磁簧传感器 GPIO 轮询示例源代码
 └── README.md           # 本文件
 ```
 
-### 3. 构建项目
+### 4. 构建项目
 
-当前目录中的示例源码和子目录 CMakeLists 已就绪。若需要作为内置应用参与整仓构建，还需要将 `ky021_demos` 接入 `qos_applications/Kconfig` 和 `qos_applications/CMakeLists.txt`，再通过菜单配置使能对应选项。完成接入并使能后，可在 UniRTOS 根目录执行类似命令进行构建：
+拉取SDK与依赖库
 
-```bash
-unirtos make EG800ZCN_LA EG800ZCNLAR01A01M04_BETA_OCPU_20260511
+```
+unirtos-cli env-setup
+```
+在 PowerShell 窗口执行固件编译命令：
+
+```
+unirtos-cli build -m EG800ZCN_LA -v EG800ZCNLAR01A01_OCPU_20260626
+```
+等待编译结束后，PowerShell 窗口末尾会提示固件编译结果：
+
+```
+SUCCESS: Unirtos project built successfully!
 ```
 
-### 4. 日志展示
+### 5. 日志展示
 
 初始化成功后，可在日志中看到类似输出：
 

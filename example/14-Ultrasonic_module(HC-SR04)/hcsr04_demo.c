@@ -1,3 +1,11 @@
+"""
+@file      : hcsr04_demo.c
+@author    : Lionel Zhang (lionel.zhang@example.com)
+@brief     : UniRTOS Based on HC-SR04 Ultrasonic Module Example
+@version   : 0.1
+@date      : 2026-06-25
+@copyright : Copyright (c) 2026
+"""
 #include "qosa_def.h"
 #include "qosa_sys.h"
 #include "qosa_gpio.h"
@@ -7,6 +15,7 @@
 
 #define QOS_LOG_TAG LOG_TAG_DEMO
 
+/* HC-SR04 超声波测距任务参数。 */
 #define HCSR04_TASK_STACK_SIZE 2048
 #define HCSR04_TASK_PRIO QOSA_PRIORITY_NORMAL
 #define HCSR04_MEASUREMENT_INTERVAL_MS 200
@@ -30,6 +39,7 @@ static float g_distance_history[HCSR04_FILTER_SIZE];
 static qosa_uint32_t g_distance_history_count;
 static qosa_uint32_t g_distance_history_index;
 
+/* 简单忙等延时，用于产生微秒级触发脉冲和回波计时。 */
 static void hcsr04_delay_us(qosa_uint32_t us)
 {
     volatile qosa_uint32_t count;
@@ -40,6 +50,7 @@ static void hcsr04_delay_us(qosa_uint32_t us)
     }
 }
 
+/* 读取 ECHO 引脚当前电平。 */
 static qosa_uint8_t hcsr04_read_echo_level(qosa_gpio_level_e *level)
 {
     if (qosa_gpio_get_level(g_echo_pin_cfg.gpio_num, level) != QOSA_GPIO_SUCCESS)
@@ -51,6 +62,7 @@ static qosa_uint8_t hcsr04_read_echo_level(qosa_gpio_level_e *level)
     return 0;
 }
 
+/* 初始化 TRIG 输出和 ECHO 输入 GPIO。 */
 static qosa_uint8_t hcsr04_gpio_init(void)
 {
     qosa_memset(&g_trig_pin_cfg, 0, sizeof(g_trig_pin_cfg));
@@ -87,6 +99,7 @@ static qosa_uint8_t hcsr04_gpio_init(void)
     return 0;
 }
 
+/* 向 TRIG 引脚输出一次测距触发脉冲。 */
 static void hcsr04_trigger(void)
 {
     qosa_gpio_set_level(g_trig_pin_cfg.gpio_num, QOSA_GPIO_LEVEL_LOW);
@@ -96,6 +109,7 @@ static void hcsr04_trigger(void)
     qosa_gpio_set_level(g_trig_pin_cfg.gpio_num, QOSA_GPIO_LEVEL_LOW);
 }
 
+/* 完成一次超声波测距，并将回波高电平时间换算为厘米。 */
 static qosa_uint8_t hcsr04_read_distance(float *distance_cm)
 {
     qosa_gpio_level_e echo_level = QOSA_GPIO_LEVEL_LOW;
@@ -157,6 +171,7 @@ static qosa_uint8_t hcsr04_read_distance(float *distance_cm)
     return 0;
 }
 
+/* 读取并过滤距离值，使用滑动平均降低测量抖动。 */
 static qosa_uint8_t hcsr04_read_filtered_distance(float *distance_cm)
 {
     float raw_distance_cm = 0.0f;
@@ -196,6 +211,7 @@ static qosa_uint8_t hcsr04_read_filtered_distance(float *distance_cm)
     return 0;
 }
 
+/* HC-SR04 测距任务，周期输出过滤后的距离。 */
 static void hcsr04_demo_process(void *ctx)
 {
     float distance_cm = 0.0f;
@@ -225,6 +241,7 @@ static void hcsr04_demo_process(void *ctx)
     }
 }
 
+/* HC-SR04 示例初始化入口，负责创建测距任务。 */
 void hcsr04_demo_init(void)
 {
     QLOGV("[HC-SR04] enter demo init");
@@ -241,4 +258,5 @@ void hcsr04_demo_init(void)
     }
 }
 
+/* 将 HC-SR04 超声波测距示例注册到 UniRTOS 应用启动流程。 */
 UNIRTOS_APP_EXPORT(700, "hcsr04_demo", hcsr04_demo_init);

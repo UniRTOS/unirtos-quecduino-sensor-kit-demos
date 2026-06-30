@@ -1,3 +1,11 @@
+"""
+@file      : water_demo.c
+@author    : Lionel Zhang (lionel.zhang@example.com)
+@brief     : UniRTOS Based on Water Level Detection Example
+@version   : 0.1
+@date      : 2026-06-25
+@copyright : Copyright (c) 2026
+"""
 #include "qcm_proj_config.h"
 #include "qosa_adc.h"
 #include "qosa_log.h"
@@ -6,6 +14,7 @@
 
 #define QOS_LOG_TAG LOG_TAG_DEMO
 
+/* 水位检测示例参数：ADC 通道、参考电压、量程、报警阈值和采样配置。 */
 #ifndef WATER_LEVEL_ADC_CHANNEL
 #define WATER_LEVEL_ADC_CHANNEL QOSA_ADC1_CHANNEL
 #endif
@@ -48,6 +57,7 @@
 
 static qosa_task_t g_water_level_task = QOSA_NULL;
 
+/* 根据换算后的水位高度返回状态名称。 */
 static const char *water_level_status_name(int level_hundredths_mm)
 {
 	if (level_hundredths_mm < (WATER_LEVEL_WARN_MM * 100))
@@ -63,6 +73,7 @@ static const char *water_level_status_name(int level_hundredths_mm)
 	return "alert";
 }
 
+/* 初始化水位传感器使用的 ADC 量程。 */
 static int water_level_adc_init(void)
 {
 	qosa_adc_aux_scale_e scale = WATER_LEVEL_ADC_SCALE;
@@ -84,6 +95,7 @@ static int water_level_adc_init(void)
 	return 0;
 }
 
+/* 多次采样 ADC 电压并计算平均值，单位为 0.1mV。 */
 static int water_level_read_voltage_avg_tenth_mv(int *avg_tenth_mv)
 {
 	int sample_index;
@@ -113,6 +125,7 @@ static int water_level_read_voltage_avg_tenth_mv(int *avg_tenth_mv)
 	return 0;
 }
 
+/* 将平均电压按线性关系换算为水位高度，单位为 0.01mm。 */
 static int water_level_convert_to_hundredths_mm(int voltage_tenth_mv)
 {
 	qosa_int32_t numerator = (qosa_int32_t)voltage_tenth_mv * WATER_LEVEL_MAX_MM * 100;
@@ -126,6 +139,7 @@ static int water_level_convert_to_hundredths_mm(int voltage_tenth_mv)
 	return (int)((numerator + (denominator / 2)) / denominator);
 }
 
+/* 水位检测后台任务，周期读取电压并输出水位状态。 */
 static void water_level_demo_task(void *argv)
 {
 	int avg_tenth_mv;
@@ -169,6 +183,7 @@ static void water_level_demo_task(void *argv)
 	}
 }
 
+/* 水位检测示例初始化入口，负责创建后台任务。 */
 static void water_level_demo_init(void)
 {
 	int ret;
@@ -195,4 +210,5 @@ static void water_level_demo_init(void)
 	QLOGI("water level demo started");
 }
 
+/* 将水位检测示例注册到 UniRTOS 应用启动流程。 */
 UNIRTOS_APP_EXPORT(200, "water_level_demo", water_level_demo_init);

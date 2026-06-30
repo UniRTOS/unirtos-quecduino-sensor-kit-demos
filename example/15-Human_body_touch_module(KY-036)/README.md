@@ -1,6 +1,6 @@
 # 人体触摸模块
 
-## **一、** **模块介绍**
+## **模块介绍**
 
 该模块是一个基于触摸检测的电容式点动型触摸开关模块。·金属触摸模块是通过人体的电容来作出反应的。由于其是监测电容，还可以在模块表面覆盖非金属材料如木材、纸、塑料等等jue缘材料，来检测人的触摸可做成隐藏在墙壁、桌面等地方的按键。
 
@@ -12,7 +12,7 @@
 
 模块有正极、负极、信号端。人体触摸感应片时，电容值发生变化，模块内部电路识别后输出高低电平信号，开发板可直接读取状态判断是否被触摸。
 
-## 二、 连接示例
+## 连接示例
 
 根据表格和图片指导，将外设与开发板一一对应连接
 
@@ -25,25 +25,45 @@
 ## 快速上手
 
 ### 1. 开发环境搭建
-参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境和完成基础开发流程。
+参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境并完成基本开发流程。
 
-### 2. 项目结构
+### 2. 代码拉取
 
 ```
-ky036_demos/
-├── CMakeLists.txt      # CMake 构建配置
+# 拉取示例仓库
+unirtos-cli new -r unirtos-quecduino-sensor-kit-demos
+# 进入该项目
+cd unirtos-quecduino-sensor-kit-demos-1.0.0/example/15-Human_body_touch_module(KY-036)
+```
+
+### 3. 项目结构
+
+```
+15-Human_body_touch_module(KY-036)/
+├── CMakeLists.txt      # KY-036 Demo 局部构建配置
+├── env_config.json     # UniRTOS 工程环境配置
 ├── ky036_demo.c        # KY-036 人体触摸传感器示例源代码
 └── README.md           # 本文件
 ```
 
-### 3. 构建项目
-当前目录中的示例源码和子目录 CMakeLists 已就绪；如需作为内置应用参与整仓构建，还需要在 `qos_applications/Kconfig` 和 `qos_applications/CMakeLists.txt` 中补充对应接入配置，并在菜单配置中使能相应开关。完成接入并使能后，可在 UniRTOS 根目录执行类似命令进行构建：
+### 4. 构建项目
+拉取SDK与依赖库
 
 ```
-unirtos make EG800ZCN_LA EG800ZCNLAR01A01M04_BETA_OCPU_20260511
+unirtos-cli env-setup
+```
+在 PowerShell 窗口执行固件编译命令：
+
+```
+unirtos-cli build -m EG800ZCN_LA -v EG800ZCNLAR01A01_OCPU_20260626
+```
+等待编译结束后，PowerShell 窗口末尾会提示固件编译结果：
+
+```
+SUCCESS: Unirtos project built successfully!
 ```
 
-### 4. 日志展示
+### 5. 日志展示
 初始化成功后，可在日志中看到类似输出：
 
 ```

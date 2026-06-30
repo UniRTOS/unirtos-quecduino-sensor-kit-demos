@@ -1,3 +1,11 @@
+"""
+@file      : adc.c
+@author    : Lionel Zhang (lionel.zhang@example.com)
+@brief     : UniRTOS Based on Magnetic Reed Switch ADC Example
+@version   : 0.1
+@date      : 2026-06-25
+@copyright : Copyright (c) 2026
+"""
 #include "qcm_proj_config.h"
 #include "qosa_adc.h"
 #include "qosa_gpio.h"
@@ -8,6 +16,7 @@
 
 #define QOS_LOG_TAG LOG_TAG_DEMO
 
+/* 干簧管磁传感器示例参数：ADC 通道、检测阈值、LED 引脚和轮询周期。 */
 #ifndef MAGNETIC_REED_ADC_CHANNEL
 #define MAGNETIC_REED_ADC_CHANNEL QOSA_ADC1_CHANNEL
 #endif
@@ -36,6 +45,7 @@ static qosa_task_t g_magnetic_reed_task = QOSA_NULL;
 static qosa_gpio_num_e g_led_gpio_num = QOSA_GPIO_0;
 static qosa_bool_t g_led_ready = QOSA_FALSE;
 
+/* 根据 ADC 电压判断磁场检测状态。 */
 static const char *magnetic_reed_status_name(int voltage_mv)
 {
 	if (voltage_mv > MAGNETIC_REED_THRESHOLD_MV)
@@ -46,6 +56,7 @@ static const char *magnetic_reed_status_name(int voltage_mv)
 	return "idle";
 }
 
+/* 根据检测结果控制指示 LED。 */
 static void magnetic_reed_set_led(qosa_bool_t detected)
 {
 	if (g_led_ready != QOSA_TRUE)
@@ -57,6 +68,7 @@ static void magnetic_reed_set_led(qosa_bool_t detected)
 						  detected == QOSA_TRUE ? QOSA_GPIO_LEVEL_HIGH : QOSA_GPIO_LEVEL_LOW);
 }
 
+/* 初始化指示 LED 对应的 GPIO。 */
 static int magnetic_reed_led_init(void)
 {
 	qosa_pin_cfg_t pin_cfg;
@@ -94,6 +106,7 @@ static int magnetic_reed_led_init(void)
 	return 0;
 }
 
+/* 初始化磁传感器采样使用的 ADC 量程。 */
 static int magnetic_reed_adc_init(void)
 {
 	qosa_adc_aux_scale_e scale = MAGNETIC_REED_ADC_SCALE;
@@ -112,6 +125,7 @@ static int magnetic_reed_adc_init(void)
 	return 0;
 }
 
+/* 磁簧开关检测任务，周期读取 ADC 并联动 LED。 */
 static void magnetic_reed_demo_task(void *argv)
 {
 	int voltage_mv;
@@ -154,6 +168,7 @@ static void magnetic_reed_demo_task(void *argv)
 	}
 }
 
+/* 磁簧开关示例初始化入口，负责创建后台任务。 */
 static void magnetic_reed_demo_init(void)
 {
 	int ret;
@@ -180,4 +195,5 @@ static void magnetic_reed_demo_init(void)
 	QLOGI("magnetic reed demo started");
 }
 
+/* 将磁簧开关示例注册到 UniRTOS 应用启动流程。 */
 UNIRTOS_APP_EXPORT(200, "magnetic_reed_demo", magnetic_reed_demo_init);

@@ -1,6 +1,6 @@
 # 水银开关模块
 
-## **一、** **模块介绍**
+## **模块介绍**
 
 水银开关模块是**重力感应式倾斜 / 倾倒检测数字开关器件**，也叫倾侧开关、角度传感器，常用于倾斜报警、防倒保护、姿态检测、触发控制场景；依靠水银流动导通 / 断开电路，输出稳定高低电平，具有**灵敏度高、导通可靠、无机械触点噪音、3.3V/5V 兼容、GPIO 直读、体积小巧**等优点。
 
@@ -8,7 +8,7 @@
 
 模块有正极、负极、信号端。利用水银的导电性与流动性，倾斜到一定角度时，水银流动接通电极，电路导通；复位后水银离开电极，电路断开，开发板通过读取电平判断倾斜状态。
 
-## 二、 连接示例
+## 连接示例
 
 根据表格和图片指导，将外设与开发板一一对应连接
 
@@ -22,25 +22,45 @@
 ## 快速上手
 
 ### 1. 开发环境搭建
-参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境和完成基础开发流程。
+参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境并完成基本开发流程。
 
-### 2. 项目结构
+### 2. 代码拉取
 
 ```
-ky017_demos/
-├── CMakeLists.txt      # CMake 构建配置
+# 拉取示例仓库
+unirtos-cli new -r unirtos-quecduino-sensor-kit-demos
+# 进入该项目
+cd unirtos-quecduino-sensor-kit-demos-1.0.0/example/18-Mercury_switch_module(KY-017)
+```
+
+### 3. 项目结构
+
+```
+18-Mercury_switch_module(KY-017)/
+├── CMakeLists.txt      # KY-017 Demo 局部构建配置
+├── env_config.json     # UniRTOS 工程环境配置
 ├── ky017_demo.c        # KY017 水银开关示例源代码
 └── README.md           # 本文件
 ```
 
-### 3. 构建项目
-当前目录中的示例源码和子目录 CMakeLists 已就绪。当前 KY017 示例尚未在 [qos_applications/CMakeLists.txt](qos_applications/CMakeLists.txt) 和 [qos_applications/Kconfig](qos_applications/Kconfig) 中接入统一构建入口，目录下也没有独立的 Kconfig 配置文件；如需作为内置应用参与整仓构建，需要先参考其他 demo 补充接入与配置开关。完成接入并使能后，可在 UniRTOS 根目录执行类似命令进行构建：
+### 4. 构建项目
+拉取SDK与依赖库
 
 ```
-unirtos make EG800ZCN_LA EG800ZCNLAR01A01M04_BETA_OCPU_20260511
+unirtos-cli env-setup
+```
+在 PowerShell 窗口执行固件编译命令：
+
+```
+unirtos-cli build -m EG800ZCN_LA -v EG800ZCNLAR01A01_OCPU_20260626
+```
+等待编译结束后，PowerShell 窗口末尾会提示固件编译结果：
+
+```
+SUCCESS: Unirtos project built successfully!
 ```
 
-### 4. 日志展示
+### 5. 日志展示
 初始化成功后，可在日志中看到类似输出：
 
 ```

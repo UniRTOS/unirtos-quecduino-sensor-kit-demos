@@ -1,3 +1,11 @@
+"""
+@file      : button_demo.c
+@author    : Lionel Zhang (lionel.zhang@example.com)
+@brief     : UniRTOS Based on Button Interrupt Example
+@version   : 0.1
+@date      : 2026-06-25
+@copyright : Copyright (c) 2026
+"""
 #include "qcm_proj_config.h"
 #include "qosa_log.h"
 #include "qosa_gpio.h"
@@ -7,116 +15,107 @@
 
 #define QOS_LOG_TAG LOG_TAG_DEMO
 
-/*
- * Button interrupt demo:
- * This example configures one GPIO as a button input, registers an interrupt,
- * and prints a log message each time the button is pressed.
- */
+/* 按键中断示例：配置一个 GPIO 作为按键输入，注册中断，并在按下时打印日志。 */
 #define BUTTON_DEMO_PIN_NUM QOSA_PIN_29
 
-/* Resolved pin configuration for the selected button pin. */
+/* 保存按键引脚解析后的平台配置。 */
 static qosa_pin_cfg_t g_button_pin_cfg;
-/* Counts how many valid button presses have been detected. */
+/* 记录已经确认的有效按键次数。 */
 static unsigned int   g_button_irq_count;
-/* Marks whether interrupt handling has been fully initialized. */
+/* 标记中断是否已经完成初始化。 */
 static int            g_button_irq_ready;
 
-/* Interrupt callback invoked by the GPIO framework.
- * The callback reads the current GPIO level and treats a low level as a button press.
- */
+/* GPIO 框架调用的中断回调，读取当前电平并将低电平视为按键按下。 */
 static void button_demo_irq_callback(void *argv)
 {
-	/* The interrupt registration passes the resolved pin configuration as user context. */
+	/* 中断注册时将解析后的引脚配置作为用户上下文传入。 */
 	qosa_pin_cfg_t      *pin_cfg = (qosa_pin_cfg_t *)argv;
-	/* Default to high so an unexpected read does not look like a press. */
+	/* 默认设为高电平，避免异常读取被误判为按下。 */
 	qosa_gpio_level_e    level = QOSA_GPIO_LEVEL_HIGH;
-	/* Stores the return value from the GPIO read API. */
+	/* 保存 GPIO 读取接口的返回值。 */
 	qosa_gpio_error_e    ret;
 
-	/* If the callback context is missing, there is no safe way to continue. */
+	/* 若回调上下文为空，则无法安全继续处理。 */
 	if (pin_cfg == NULL)
 	{
 		QLOGW("button irq callback missing pin context");
 		return;
 	}
 
-	/* Ignore interrupts until the module finishes initialization. */
+	/* 初始化完成前忽略中断，避免状态未就绪时误处理。 */
 	if (!g_button_irq_ready)
 	{
 		return;
 	}
 
-	/* Read the current level from the button GPIO so we can filter out spurious triggers. */
+	/* 读取按键 GPIO 当前电平，用于过滤毛刺或误触发。 */
 	ret = qosa_gpio_get_level(pin_cfg->gpio_num, &level);
 	if (ret != QOSA_GPIO_SUCCESS)
 	{
-		/* A failed read means we cannot confirm whether a press happened. */
+		/* 读取失败时无法确认是否真的按下。 */
 		QLOGW("button gpio=%d get level failed ret=%d",
 			  (int)pin_cfg->gpio_num,
 			  (int)ret);
 		return;
 	}
 
-	/* This demo uses a falling-edge trigger with pull-up, so a low level means pressed. */
+	/* 本示例使用上拉和下降沿触发，因此低电平表示按键按下。 */
 	if (level != QOSA_GPIO_LEVEL_LOW)
 	{
-		/* If the line is not low, the interrupt is not treated as a valid press event. */
+		/* 非低电平不作为有效按键事件。 */
 		return;
 	}
 
-	/* Count only confirmed button presses. */
+	/* 只统计确认后的按键事件。 */
 	++g_button_irq_count;
 
-	/* Log the press event together with the pin and GPIO number for debugging. */
+	/* 打印按键次数、PIN 和 GPIO 编号，便于调试接线。 */
 	QLOGI("button pressed count=%u pin=%u gpio=%d",
 		  g_button_irq_count,
 		  (unsigned int)pin_cfg->pin_num,
 		  (int)pin_cfg->gpio_num);
 }
 
-/* Initialize the button demo.
- * This function resolves the pin configuration, sets the pin to GPIO mode,
- * registers the interrupt callback, and enables falling-edge detection.
- */
+/* 初始化按键示例：解析引脚、切换 GPIO 复用、注册中断并使能下降沿检测。 */
 static void button_demo_init(void)
 {
-	/* Interrupt configuration passed to the GPIO framework. */
+	/* 传递给 GPIO 框架的中断配置。 */
 	qosa_int_cfg_t    int_cfg = {0};
-	/* Stores the result of GPIO-related API calls. */
+	/* 保存 GPIO 相关接口的返回值。 */
 	qosa_gpio_error_e gpio_ret;
-	/* Stores the result of pinctrl configuration. */
+	/* 保存引脚复用配置接口的返回值。 */
 	qosa_pinctrl_error_e pinctrl_ret;
 
-	/* Reset runtime state before registering the interrupt. */
+	/* 注册中断前重置运行状态。 */
 	g_button_irq_ready = 0;
 	g_button_irq_count = 0;
 
-	/* Translate the compile-time pin number into platform-specific GPIO settings. */
+	/* 将编译期 PIN 编号转换成平台 GPIO 配置。 */
 	gpio_ret = qosa_get_pin_default_cfg((qosa_uint8_t)BUTTON_DEMO_PIN_NUM, &g_button_pin_cfg);
 	if (gpio_ret != QOSA_GPIO_SUCCESS)
 	{
-		/* Stop initialization if the pin configuration cannot be resolved. */
+		/* 无法解析引脚配置时停止初始化。 */
 		QLOGE("button demo get pin %u default cfg failed ret=%d",
 			  (unsigned int)BUTTON_DEMO_PIN_NUM,
 			  (int)gpio_ret);
 		return;
 	}
 
-	/* Switch the pin mux to GPIO mode so the pin can be used as a button input. */
+	/* 切换引脚复用为 GPIO，作为按键输入使用。 */
 	pinctrl_ret = qosa_pin_set_func((qosa_pin_num_e)g_button_pin_cfg.pin_num, g_button_pin_cfg.gpio_func);
 	if (pinctrl_ret != QOSA_PINCTRL_SUCCESS)
 	{
-		/* Abort if the pin cannot be configured for GPIO operation. */
+		/* 引脚无法配置为 GPIO 时终止初始化。 */
 		QLOGE("button demo set pin %u gpio func failed ret=%d",
 			  (unsigned int)g_button_pin_cfg.pin_num,
 			  (int)pinctrl_ret);
 		return;
 	}
 
-	/* Prepare the interrupt configuration:
-	 * - debounce is enabled to reduce mechanical switch bounce;
-	 * - pull-up is enabled because the demo uses a falling-edge trigger;
-	 * - user_ctx carries the resolved pin configuration into the callback.
+	/* 准备中断配置：
+	 * - 启用消抖，降低机械按键抖动影响；
+	 * - 启用上拉，配合下降沿触发；
+	 * - user_ctx 将引脚配置传入回调函数。
 	 */
 	int_cfg.gpio_num = g_button_pin_cfg.gpio_num;
 	int_cfg.gpio_debounce = QOSA_GPIO_DEBOUNCE_EN;
@@ -125,11 +124,11 @@ static void button_demo_init(void)
 	int_cfg.options = 1;
 	int_cfg.user_ctx = &g_button_pin_cfg;
 
-	/* Register the interrupt handler with the GPIO subsystem. */
+	/* 向 GPIO 子系统注册中断处理函数。 */
 	gpio_ret = qosa_interrupt_register(&int_cfg);
 	if (gpio_ret != QOSA_GPIO_SUCCESS)
 	{
-		/* Stop if interrupt registration fails. */
+		/* 中断注册失败时停止初始化。 */
 		QLOGE("button demo register irq failed pin=%u gpio=%d ret=%d",
 			  (unsigned int)g_button_pin_cfg.pin_num,
 			  (int)g_button_pin_cfg.gpio_num,
@@ -137,11 +136,11 @@ static void button_demo_init(void)
 		return;
 	}
 
-	/* Enable the interrupt on the falling edge so a press generates an event. */
+	/* 使能下降沿中断，使按下动作产生事件。 */
 	gpio_ret = qosa_interrupt_enable(g_button_pin_cfg.gpio_num, QOSA_GPIO_TRIGGER_FALLING_EDGE);
 	if (gpio_ret != QOSA_GPIO_SUCCESS)
 	{
-		/* If enabling fails, unregister to keep the system state clean. */
+		/* 使能失败时注销中断，保持系统状态干净。 */
 		QLOGE("button demo enable irq failed pin=%u gpio=%d ret=%d",
 			  (unsigned int)g_button_pin_cfg.pin_num,
 			  (int)g_button_pin_cfg.gpio_num,
@@ -150,14 +149,14 @@ static void button_demo_init(void)
 		return;
 	}
 
-	/* Mark the demo as ready only after both registration and enable succeed. */
+	/* 注册和使能都成功后，才标记示例就绪。 */
 	g_button_irq_ready = 1;
 
-	/* Emit a summary log so it is clear which pin and trigger mode are active. */
+	/* 输出摘要日志，确认当前使用的引脚和触发方式。 */
 	QLOGI("button irq demo ready: pin=%u gpio=%d trigger=falling-edge pull-up=on debounce=on",
 		  (unsigned int)g_button_pin_cfg.pin_num,
 		  (int)g_button_pin_cfg.gpio_num);
 }
 
-/* Register the button interrupt demo with the application startup framework. */
+/* 将按键中断示例注册到应用启动框架。 */
 UNIRTOS_APP_EXPORT(200, "button_irq_demo", button_demo_init);

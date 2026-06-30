@@ -1,156 +1,155 @@
-# 激光发射模块
+# KY-008 Laser Emission Demo
 
-## **一、** **模块介绍**
+## 概述
 
-**激光发射模块（Laser Emitter Module）** 的核心原理是：**通过半导体激光二极管（LD），将电能高效转化为高亮度、高方向性、单色性的相干光（激光），再经光学系统准直 / 整形后发射出去**。它广泛用于激光测距、激光雷达、光纤通信、激光指示、红外夜视等场景。
+KY-008 Laser Emission Demo 是一个基于 UNIRTOS 的 GPIO 输出控制示例项目。该项目演示了如何初始化激光发射模块控制引脚，并通过后台任务周期性打开和关闭激光输出。通过此示例，开发者可以快速了解 UNIRTOS GPIO 输出、任务创建、周期延时和基础日志打印的使用方法。
 
-## 二、 连接示例
+## 模块介绍
 
-根据表格和图片指导，将外设与开发板一一对应连接
+KY-008 激光发射模块可在信号脚有效时发射激光，常用于光电触发、指示、对准和实验演示。激光模块具有方向性强、亮度集中的特点，使用时应避免直视光束或照射人眼。
 
-| 外设        | 开发板 |
-| ----------- | ------ |
-| Module（+） | 3.3V   |
-| Module（-） | GND    |
-| Module（S） | PIN31  |
+本示例默认高电平打开激光，低电平关闭激光，并按固定周期闪烁。
+
+## 连接示例
+
+| 外设 | 开发板 |
+| ---- | ------ |
+| KY-008（VCC） | 3.3V |
+| KY-008（GND） | GND |
+| KY-008（S） | PIN31 |
+
+当前示例默认使用 PIN31 控制激光发射模块，高电平打开，低电平关闭。
 
 ## 快速上手
 
 ### 1. 开发环境搭建
-参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境和完成基础开发流程。
 
-### 2. 项目结构
+参考 [UNIRTOS 快速入门](https://docs.quectel.com/zh/UniRTOS/UniRTOS%E6%96%87%E6%A1%A3/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.html) 文档，了解如何搭建开发环境并完成基本开发流程。
+
+### 2. 代码拉取
 
 ```
-ky008_demos/
-├── CMakeLists.txt      # CMake 构建配置
-├── Kconfig             # 示例配置开关
-├── ky008_demo.c        # KY008 激光发射器示例源代码
+# 拉取示例仓库
+unirtos-cli new -r unirtos-quecduino-sensor-kit-demos
+# 进入该项目
+cd unirtos-quecduino-sensor-kit-demos-1.0.0/example/17-Laser_emission_module(KY-008)
+```
+
+### 3. 项目结构
+
+```text
+17-Laser_emission_module(KY-008)/
+├── CMakeLists.txt      # KY-008 Demo 局部构建配置
+├── env_config.json     # UniRTOS 工程环境配置
+├── ky008_demo.c        # 激光发射控制示例源代码
 └── README.md           # 本文件
 ```
 
-### 3. 构建项目
-当前目录中的示例源码和子目录 CMakeLists 已就绪；如需作为内置应用参与整仓构建，需要在菜单配置中使能 `QAPP_KY008_DEMO`。完成接入并使能后，可在 UniRTOS 根目录执行类似命令进行构建：
+### 4. 构建项目
+
+拉取SDK与依赖库
 
 ```
-unirtos make EG800ZCN_LA EG800ZCNLAR01A01M04_BETA_OCPU_20260511
+unirtos-cli env-setup
 ```
-
-### 4. 日志展示
-初始化成功后，可在日志中看到类似输出：
+在 PowerShell 窗口执行固件编译命令：
 
 ```
-[I/LOG_TAG_DEMO] ky008 demo task created
-[I/LOG_TAG_DEMO] ky008 gpio init ok, pin=31 gpio=31 active=1 interval=2000ms
-[I/LOG_TAG_DEMO] ky008 demo started
+unirtos-cli build -m EG800ZCN_LA -v EG800ZCNLAR01A01_OCPU_20260626
 ```
-
-运行期间，示例会在后台任务中持续执行激光开关循环，并按默认 2000 ms 间隔输出当前状态日志。典型日志如下：
+等待编译结束后，PowerShell 窗口末尾会提示固件编译结果：
 
 ```
-[I/LOG_TAG_DEMO] laser on
-[I/LOG_TAG_DEMO] laser off
-[I/LOG_TAG_DEMO] laser on
+SUCCESS: Unirtos project built successfully!
 ```
 
-在默认配置下，状态控制规则如下：
+### 5. 日志展示
 
-- `active=1`：GPIO 输出高电平时开启激光，输出低电平时关闭激光
-- `interval=2000ms`：激光开启后保持 2 秒，再关闭 2 秒，持续循环闪烁
+```text
+[I/LOG_TAG_DEMO] KY-008 init ok, pin=31, gpio=31
+```
+
+后台任务会默认每隔 2 秒切换一次激光状态：
+
+```text
+[I/LOG_TAG_DEMO] KY-008 laser on
+[I/LOG_TAG_DEMO] KY-008 laser off
+```
+
+默认状态控制规则如下：
+
+- GPIO 输出高电平：激光打开
+- GPIO 输出低电平：激光关闭
 
 ## 代码概览
 
 ### 示例工作流程
 
-```
+```text
 程序启动
     ↓
-调用 ky008_demo_start()
+执行 ky008_demo_init()
     ↓
 创建名为 "ky008" 的后台任务
     ↓
-进入任务主函数 ky008_demo_task()
-    ↓
-调用 ky008_gpio_init()
-    ↓
-查询目标 PIN 默认配置并切换为 GPIO 输出功能
-    ↓
-根据 active_level 计算激光开启/关闭电平
-    ↓
-将 GPIO 初始化为无效电平，避免上电误亮
-    ↓
+调用 ky008_laser_init() 初始化激光控制 GPIO
+        ↓
 进入周期循环：
-  ├─ 调用 ky008_on() 开启激光
-  ├─ 调用 qosa_task_sleep_ms() 延时一个 interval 周期
-  ├─ 调用 ky008_off() 关闭激光
-  └─ 再延时一个 interval 周期后继续循环
+    ├─ 调用 ky008_laser_on() 打开激光
+    ├─ 延时 2000 ms
+    ├─ 调用 ky008_laser_off() 关闭激光
+    └─ 延时 2000 ms
 ```
 
 ### 主要 API 接口
 
-#### ky008_demo_start
-模块启动入口函数。
+#### ky008_demo_init
 
-- 检查 KY008 后台任务是否已经创建
-- 创建后台任务并设置任务栈大小、优先级和任务名
-- 在任务创建成功后输出启动日志
+- 创建 KY-008 激光控制任务
+- 设置任务栈、优先级、任务名称和入口函数
 
-#### ky008_demo_task
-后台任务处理函数。
+#### ky008_laser_init
 
-- 调用 GPIO 初始化函数完成激光控制引脚配置
-- 在初始化失败时删除当前任务并退出
-- 初始化成功后进入长期循环，持续执行激光闪烁
+- 获取 PIN31 默认配置并切换到 GPIO 功能
+- 初始化为 GPIO 输出模式
+- 默认关闭激光
 
-#### ky008_gpio_init
-激光控制 GPIO 初始化函数。
+#### ky008_laser_on
 
-- 调用 `qosa_get_pin_default_cfg()` 获取激光控制引脚默认配置
-- 调用 `qosa_pin_set_func()` 将引脚切换到 GPIO 功能
-- 根据配置的 `active_level` 计算有效电平和无效电平
-- 调用 `qosa_gpio_init()` 将对应 GPIO 初始化为输出模式
-- 在初始化成功后输出当前 pin、gpio、有效电平和闪烁间隔日志
+- 调用 `qosa_gpio_set_level()` 输出高电平
+- 设置失败时输出错误日志
 
-#### ky008_set_level
-GPIO 电平设置函数。
+#### ky008_laser_off
 
-- 调用 `qosa_gpio_set_level()` 输出指定电平
-- 在设置失败时输出错误日志并返回错误码
+- 调用 `qosa_gpio_set_level()` 输出低电平
+- 设置失败时输出错误日志
 
-#### ky008_on
-激光开启函数。
+#### ky008_laser_blink
 
-- 将 GPIO 输出为有效电平
-- 在设置成功后输出 `laser on` 日志
+- 周期调用打开和关闭接口
+- 输出激光状态日志
 
-#### ky008_off
-激光关闭函数。
+#### UNIRTOS_APP_EXPORT
 
-- 将 GPIO 输出为无效电平
-- 在设置成功后输出 `laser off` 日志
-
-#### ky008_blink_once
-单次闪烁函数。
-
-- 调用 `ky008_on()` 开启激光
-- 延时一个 interval 周期
-- 调用 `ky008_off()` 关闭激光
-- 再延时一个 interval 周期
+- 以名称 `ky008_demo` 注册 `ky008_demo_init()`
+- 启动优先级为 `200`
 
 ## 配置说明
-默认 KY008 示例配置定义在 [qos_applications/ky008_demos/Kconfig](qos_applications/ky008_demos/Kconfig) 和 [qos_applications/ky008_demos/ky008_demo.c](qos_applications/ky008_demos/ky008_demo.c) 中，可通过配置项和宏进行编译期覆盖：
 
-- `QAPP_KY008_DEMO`：KY008 激光发射器示例总开关
-- `QAPP_KY008_PIN_NUM`：默认控制引脚为 `31`
-- `QAPP_KY008_ACTIVE_LEVEL`：默认有效电平为 `1`，即高电平开启激光
-- `QAPP_KY008_INTERVAL_MS`：默认闪烁间隔为 `2000 ms`
-- `KY008_TASK_STACK_SIZE`：后台任务栈大小为 `2048`
-- `KY008_TASK_PRIORITY`：后台任务优先级为 `QOSA_PRIORITY_NORMAL`
+当前示例中的默认配置定义在 `ky008_demo.c` 中：
 
-如果实际硬件连接的激光控制引脚或触发电平与默认值不同，需要根据原理图和实物接线调整上述配置。当前示例采用后台任务持续闪烁方式，适合用于激光指示、对准辅助、安防警示等场景；如果你希望激光常亮或按外部事件触发开关，可在 `ky008_demo_task()` 中进一步改为事件驱动版实现。
+- 激光控制引脚：`QOSA_PIN_31`
+- 有效电平：高电平有效
+- 闪烁间隔：`2000 ms`
+- 任务栈大小：`2048`
+- 任务优先级：`QOSA_PRIORITY_NORMAL`
+
+激光模块具有潜在安全风险，调试时请避免直视或对准人体、镜面反射物体。
 
 ## 论坛社区
+
 [点此进入](https://forumschinese.quectel.com/c/66-category/66)
 
 ## 贡献指南
+
 欢迎提交 Issue 和 Pull Request。

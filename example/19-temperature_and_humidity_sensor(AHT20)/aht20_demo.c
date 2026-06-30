@@ -1,3 +1,11 @@
+"""
+@file      : aht20_demo.c
+@author    : Lionel Zhang (lionel.zhang@example.com)
+@brief     : UniRTOS Based on AHT20 Temperature and Humidity Sensor Example
+@version   : 0.1
+@date      : 2026-06-25
+@copyright : Copyright (c) 2026
+"""
 #include "qcm_proj_config.h"
 #include "qosa_log.h"
 #include "qosa_iic.h"
@@ -6,6 +14,7 @@
 
 #define QOS_LOG_TAG LOG_TAG_DEMO
 
+/* AHT20 I2C 地址、命令字、延时和总线引脚配置。 */
 #define AHT20_I2C_ADDR_7BIT 0x38U
 #define AHT20_STATUS_BUSY_MASK 0x80U
 
@@ -28,6 +37,7 @@
 static qosa_task_t aht20_demo_thread_id;
 static qosa_uint8_t aht20_slave_addr = AHT20_I2C_ADDR_7BIT;
 
+/* 发送软复位命令，恢复 AHT20 传感器状态。 */
 static qosa_bool_t aht20_reset_sensor(void)
 {
 	qosa_uint8_t unused = 0U;
@@ -44,6 +54,7 @@ static qosa_bool_t aht20_reset_sensor(void)
 	return QOSA_TRUE;
 }
 
+/* 发送初始化命令，使 AHT20 进入可测量状态。 */
 static qosa_bool_t aht20_initialize_sensor(void)
 {
 	qosa_uint8_t unused = 0U;
@@ -59,6 +70,7 @@ static qosa_bool_t aht20_initialize_sensor(void)
 	return QOSA_TRUE;
 }
 
+/* 配置 I2C 引脚复用并初始化 I2C 总线。 */
 static qosa_bool_t aht20_configure_bus(void)
 {
 	qosa_pinctrl_error_e pin_err;
@@ -88,6 +100,7 @@ static qosa_bool_t aht20_configure_bus(void)
 	return QOSA_TRUE;
 }
 
+/* 根据温湿度结果返回人体舒适度描述。 */
 static const char *aht20_check_comfort(qosa_int32_t temperature_tenths, qosa_uint32_t humidity_tenths)
 {
 	if (temperature_tenths < 180)
@@ -113,6 +126,7 @@ static const char *aht20_check_comfort(qosa_int32_t temperature_tenths, qosa_uin
 	return "舒适";
 }
 
+/* 触发一次 AHT20 测量，并解析温度和湿度原始数据。 */
 static qosa_bool_t aht20_read_measurement(qosa_int32_t *temperature_tenths, qosa_uint32_t *humidity_tenths)
 {
 	qosa_uint8_t measure_payload[2] = {0x33U, 0x00U};
@@ -152,6 +166,7 @@ static qosa_bool_t aht20_read_measurement(qosa_int32_t *temperature_tenths, qosa
 	return QOSA_TRUE;
 }
 
+/* AHT20 后台任务，周期读取温湿度并输出舒适度状态。 */
 static void aht20_demo_thread(void *argument)
 {
 	qosa_int32_t temperature_tenths = 0;
@@ -202,6 +217,7 @@ static void aht20_demo_thread(void *argument)
 	}
 }
 
+/* AHT20 示例初始化入口，负责创建采样任务。 */
 static void aht20_demo_init(void)
 {
 	int ret;
@@ -226,4 +242,5 @@ static void aht20_demo_init(void)
 	QLOGI("AHT20 demo thread created");
 }
 
+/* 将 AHT20 温湿度传感器示例注册到 UniRTOS 应用启动流程。 */
 UNIRTOS_APP_EXPORT(700, "aht20_demo", aht20_demo_init);
