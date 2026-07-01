@@ -1,11 +1,11 @@
-"""
+/*
 @file      : unir_rgb_demo.c
 @author    : Lionel Zhang (lionel.zhang@example.com)
 @brief     : UniRTOS Based on RGB LED Example
 @version   : 0.1
 @date      : 2026-06-25
 @copyright : Copyright (c) 2026
-"""
+*/
 // QOSA 核心定义头文件
 #include "qosa_def.h"
 // QOSA 系统 API 头文件

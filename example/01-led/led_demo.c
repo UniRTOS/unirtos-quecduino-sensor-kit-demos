@@ -1,11 +1,11 @@
-"""
+/*
 @file      : led_demo.c
 @author    : Lionel Zhang (lionel.zhang@example.com)
 @brief     : UniRTOS Based on led Example
 @version   : 0.1
 @date      : 2026-06-25
 @copyright : Copyright (c) 2026
-"""
+*/
 #include "qosa_sys.h"
 #include "qosa_gpio.h"
 #include "qosa_dev_eigen.h"

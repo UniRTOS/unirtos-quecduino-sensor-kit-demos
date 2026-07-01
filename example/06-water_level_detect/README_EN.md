@@ -185,4 +185,9 @@ If the actual water level sensor output voltage range, ADC input channel, or cal
 
 ## Contribution Guidelines
 
-We welcome Issue submissions and Pull Requests.
+You are welcome to contribute. We recommend submitting changes as follows:
+
+- Run basic validation before submitting: env-setup, build, and clean.
+- Use a clear commit message that describes the purpose of the change, its impact scope, and validation results.
+- When adding new features or changing behavior, update the README and related documentation at the same time.
+- Submit bug fixes and feature improvements through Issues or Pull Requests.

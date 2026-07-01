@@ -1,11 +1,11 @@
-"""
+/*
 @file      : hcsr04_demo.c
 @author    : Lionel Zhang (lionel.zhang@example.com)
 @brief     : UniRTOS Based on HC-SR04 Ultrasonic Module Example
 @version   : 0.1
 @date      : 2026-06-25
 @copyright : Copyright (c) 2026
-"""
+*/
 #include "qosa_def.h"
 #include "qosa_sys.h"
 #include "qosa_gpio.h"
