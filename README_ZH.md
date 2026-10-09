@@ -22,26 +22,26 @@ QuecDuino入门级传感器实验套件，是专为初学者、创客及教育�
 
 |      | Module                                                       | 描述                                                         |
 | ---- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 01   | [LED Module](example/01-led/README.md)                       | 基础 IO 输出控制案例，通过高低电平实现 LED 亮灭，是嵌入式入门最基础的数字输出实践。 |
-| 02   | [Single Button Module](example/02-key_interrupt/README.md)   | 基础 IO 输入检测案例，实现按键按下 / 松开逻辑，学习按键状态识别。 |
-| 03   | [RGB LED Module](example/03-rgb_led/README.md)               | 实现红 / 绿 / 蓝三原色混色。                                 |
-| 04   | [Microphone (MIC) Module](example/04-mic/README.md)          | 检测周围环境中的声音强度。                                   |
-| 05   | [Buzzer Module](example/05-buzzer/README.md)                 | 蜂鸣器控制案例，可实现固定音调提示音。                       |
-| 06   | [Water Level Detection Module](example/06-water_level_detect/README.md) | 电阻式液体检测传感器，检测水位高度、有无水、漏水报警等场景。 |
-| 07   | [Reed Switch Module (KY-025)](example/07-magnetic_reed_switch(KY-025)/README.md) | 干簧管磁感应开关，靠近磁铁时触发通断信号。                   |
-| 08   | [Obstacle Detection Module (KY-032)](example/08-Obstacle_Detection_Module(KY-032)/README.md) | 障碍物检测模块是红外反射式数字检测器件，也叫红外避障模块，用于近距离障碍物检测、循迹、避障、限位触发。 |
-| 09   | [Mini Reed Switch (KY-021)](example/09-Mini_Magnetic(KY-021)/README.md) | 迷你磁簧，全称迷你磁簧开关（干簧管模块），是一种利用磁场控制通断的无源开关组件，这类磁性感应器件一般作为门磁检测、位置检测、限位触发使用。 |
-| 10   | [Photoresistor Module (KY-018)](example/10-photoresistor(KY-018)/README.md) | 光敏电阻传感器是一种能够将光信号转换为电信号的传感器，其阻值会随着光照强度的变化而改变。 |
-| 11   | [Flame Detection Module (KY-026)](example/11-flame_detect(KY-026)/README.md) | 火焰检测模块是用于探测火焰 / 明火的传感器模块，通过接收火焰产生的红外光，输出高低电平信号，实现火灾报警、火源检测。 |
-| 12   | [Magic Light Cup Module (KY-027)](example/12-Magic_Aura_Module(KY-027)/README.md) | 魔术光环模块（KY‑027）是倾斜感应 + LED 发光二合一数字模块，内置水银开关与高亮 LED，用于倾斜检测、姿态触发、状态指示、创客互动项目。 |
-| 13   | [Tilt Switch Module (KY-020)](example/13-Inclination_switch_module(KY-020)/README.md) | 倾斜开关是姿态感应数字开关器件，也被称作滚珠开关、倾倒传感器，常用于倾斜检测、防倒保护、姿态触发、智能报警场景。 |
-| 14   | [Ultrasonic Module (HC-SR04)](example/14-Ultrasonic_module(HC-SR04)/README.md) | 基于声波反射的距离测量传感器，通过发射与接收超声波计算物体距离，常用于小车测距、障碍物检测、液位 / 水位测量场景。 |
-| 15   | [Human Touch Module (KY-036)](example/15-Human_body_touch_module(KY-036)/README.md) | 电容式触摸检测传感器，通过人体触碰改变电容信号，实现触摸开关、触摸按键功能，替代传统机械按键提升交互体验。 |
-| 16   | [Digital Tube Module (JY005)](example/16-Digital_tube_module(JY005)/README.md) | 单位数码管模块是数字显示器件，由 7 段发光二极管组成，用于显示 0-9 数字及简单符号，广泛用于计数、计时、状态显示、创客 DIY 场景。 |
-| 17   | [Laser Transmitter Module (KY-008)](example/17-Laser_emission_module(KY-008)/README.md) | 激光发射模块通过半导体激光二极管，将电能高效转化为激光发射出去。它广泛用于激光测距、激光雷达、光纤通信、激光指示、红外夜视等场景。 |
-| 18   | [Mercury Switch Module (KY-017)](example/18-Mercury_switch_module(KY-017)/README.md) | 水银开关模块，常用于倾斜报警、防倒保护、姿态检测、触发控制场景。 |
-| 19   | [Temperature & Humidity Sensor (AHT20)](example/19-temperature_and_humidity_sensor(AHT20)/README.md) | 温湿度传感器作为常见的传感器之一，是一种装有湿敏和热敏元件，能够用来测量温度和湿度的传感器装置。 |
-| 20   | [Analog Piezoelectric Vibration Sensor](example/20-Simulated_Piezoelectric_Ceramic_Vibration_Sensor/README.md) | 模拟压电陶瓷震动传感器是一款用于检测振动、碰撞或者声波的传感器模块。它使用压电陶瓷技术，能够在受到压力或震动时输出相应的模拟信号。 |
+| 01   | [LED Module](example/01_led/README.md)                       | 基础 IO 输出控制案例，通过高低电平实现 LED 亮灭，是嵌入式入门最基础的数字输出实践。 |
+| 02   | [Single Button Module](example/02_key_interrupt/README.md)   | 基础 IO 输入检测案例，实现按键按下 / 松开逻辑，学习按键状态识别。 |
+| 03   | [RGB LED Module](example/03_rgb_led/README.md)               | 实现红 / 绿 / 蓝三原色混色。                                 |
+| 04   | [Microphone (MIC) Module](example/04_mic/README.md)          | 检测周围环境中的声音强度。                                   |
+| 05   | [Buzzer Module](example/05_buzzer/README.md)                 | 蜂鸣器控制案例，可实现固定音调提示音。                       |
+| 06   | [Water Level Detection Module](example/06_water_level_detect/README.md) | 电阻式液体检测传感器，检测水位高度、有无水、漏水报警等场景。 |
+| 07   | [Reed Switch Module (KY-025)](example/07_magnetic_reed_switch/README.md) | 干簧管磁感应开关，靠近磁铁时触发通断信号。                   |
+| 08   | [Obstacle Detection Module (KY-032)](example/08_Obstacle_Detection_Module/README.md) | 障碍物检测模块是红外反射式数字检测器件，也叫红外避障模块，用于近距离障碍物检测、循迹、避障、限位触发。 |
+| 09   | [Mini Reed Switch (KY-021)](example/09_Mini_Magnetic/README.md) | 迷你磁簧，全称迷你磁簧开关（干簧管模块），是一种利用磁场控制通断的无源开关组件，这类磁性感应器件一般作为门磁检测、位置检测、限位触发使用。 |
+| 10   | [Photoresistor Module (KY-018)](example/10_photoresistor/README.md) | 光敏电阻传感器是一种能够将光信号转换为电信号的传感器，其阻值会随着光照强度的变化而改变。 |
+| 11   | [Flame Detection Module (KY-026)](example/11_flame_detect/README.md) | 火焰检测模块是用于探测火焰 / 明火的传感器模块，通过接收火焰产生的红外光，输出高低电平信号，实现火灾报警、火源检测。 |
+| 12   | [Magic Light Cup Module (KY-027)](example/12_Magic_Aura_Module/README.md) | 魔术光环模块（KY‑027）是倾斜感应 + LED 发光二合一数字模块，内置水银开关与高亮 LED，用于倾斜检测、姿态触发、状态指示、创客互动项目。 |
+| 13   | [Tilt Switch Module (KY-020)](example/13_Inclination_switch_module/README.md) | 倾斜开关是姿态感应数字开关器件，也被称作滚珠开关、倾倒传感器，常用于倾斜检测、防倒保护、姿态触发、智能报警场景。 |
+| 14   | [Ultrasonic Module (HC-SR04)](example/14_Ultrasonic_module/README.md) | 基于声波反射的距离测量传感器，通过发射与接收超声波计算物体距离，常用于小车测距、障碍物检测、液位 / 水位测量场景。 |
+| 15   | [Human Touch Module (KY-036)](example/15_Human_body_touch_module/README.md) | 电容式触摸检测传感器，通过人体触碰改变电容信号，实现触摸开关、触摸按键功能，替代传统机械按键提升交互体验。 |
+| 16   | [Digital Tube Module (JY005)](example/16_Digital_tube_module/README.md) | 单位数码管模块是数字显示器件，由 7 段发光二极管组成，用于显示 0-9 数字及简单符号，广泛用于计数、计时、状态显示、创客 DIY 场景。 |
+| 17   | [Laser Transmitter Module (KY-008)](example/17_Laser_emission_module/README.md) | 激光发射模块通过半导体激光二极管，将电能高效转化为激光发射出去。它广泛用于激光测距、激光雷达、光纤通信、激光指示、红外夜视等场景。 |
+| 18   | [Mercury Switch Module (KY-017)](example/18_Mercury_switch_module/README.md) | 水银开关模块，常用于倾斜报警、防倒保护、姿态检测、触发控制场景。 |
+| 19   | [Temperature & Humidity Sensor (AHT20)](example/19_temperature_and_humidity_sensor/README.md) | 温湿度传感器作为常见的传感器之一，是一种装有湿敏和热敏元件，能够用来测量温度和湿度的传感器装置。 |
+| 20   | [Analog Piezoelectric Vibration Sensor](example/20_piezo_vibration_sensor/README.md) | 模拟压电陶瓷震动传感器是一款用于检测振动、碰撞或者声波的传感器模块。它使用压电陶瓷技术，能够在受到压力或震动时输出相应的模拟信号。 |
 
 # EG800Z Duino 开发板固件烧录&使用指导
 

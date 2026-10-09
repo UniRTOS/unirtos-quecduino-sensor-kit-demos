@@ -1,3 +1,0 @@
-config QAPP_TILT_SWITCH_DEMO
-    bool "Tilt switch linked output demo"
-    default n

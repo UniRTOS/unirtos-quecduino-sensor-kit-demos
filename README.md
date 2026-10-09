@@ -22,26 +22,26 @@ Product features:
 
 | No. | Module | Description |
 | ---- | ---- | ---- |
-| 01 | [LED Module](example/01-led/README_EN.md) | Basic GPIO output control example. It uses high and low levels to turn the LED on and off, making it a fundamental digital output practice for embedded beginners. |
-| 02 | [Single Button Module](example/02-key_interrupt/README_EN.md) | Basic GPIO input detection example for button press and release handling, suitable for learning button state recognition. |
-| 03 | [RGB LED Module](example/03-rgb_led/README_EN.md) | Demonstrates red, green, and blue color mixing. |
-| 04 | [Microphone (MIC) Module](example/04-mic/README_EN.md) | Detects ambient sound intensity. |
-| 05 | [Buzzer Module](example/05-buzzer/README_EN.md) | Buzzer control example for simple fixed-tone alert sounds. |
-| 06 | [Water Level Detection Module](example/06-water_level_detect/README_EN.md) | Resistive liquid detection sensor for water level measurement, water presence detection, and leakage alarm scenarios. |
-| 07 | [Reed Switch Module (KY-025)](example/07-magnetic_reed_switch(KY-025)/README_EN.md) | Magnetic reed switch that triggers an on/off signal when a magnet approaches. |
-| 08 | [Obstacle Detection Module (KY-032)](example/08-Obstacle_Detection_Module(KY-032)/README_EN.md) | Infrared reflective digital detection module for short-range obstacle detection, line tracking, obstacle avoidance, and limit triggering. |
-| 09 | [Mini Reed Switch (KY-021)](example/09-Mini_Magnetic(KY-021)/README_EN.md) | Mini magnetic reed switch module, a passive switch controlled by a magnetic field, commonly used for door contact detection, position sensing, and limit triggering. |
-| 10 | [Photoresistor Module (KY-018)](example/10-photoresistor(KY-018)/README_EN.md) | Light-dependent resistor sensor that converts light intensity changes into electrical signal changes through resistance variation. |
-| 11 | [Flame Detection Module (KY-026)](example/11-flame_detect(KY-026)/README_EN.md) | Detects flames or open fire by sensing infrared light emitted by a flame and outputting a digital level for fire alarms and fire source detection. |
-| 12 | [Magic Light Cup Module (KY-027)](example/12-Magic_Aura_Module(KY-027)/README_EN.md) | Combined tilt-sensing and LED module with a built-in mercury switch and bright LED, suitable for tilt detection, posture-triggered interaction, and status indication. |
-| 13 | [Tilt Switch Module (KY-020)](example/13-Inclination_switch_module(KY-020)/README_EN.md) | Posture-sensing digital switch, also known as a ball switch or tilt sensor, commonly used for tilt detection, anti-tip protection, posture triggering, and alarms. |
-| 14 | [Ultrasonic Module (HC-SR04)](example/14-Ultrasonic_module(HC-SR04)/README_EN.md) | Distance measurement sensor based on ultrasonic reflection, often used for mobile robot ranging, obstacle detection, and liquid level measurement. |
-| 15 | [Human Touch Module (KY-036)](example/15-Human_body_touch_module(KY-036)/README_EN.md) | Capacitive touch sensor that detects contact by changes in capacitance, enabling touch switch and touch key functionality as a replacement for mechanical buttons. |
-| 16 | [Digital Tube Module (JY005)](example/16-Digital_tube_module(JY005)/README_EN.md) | Single-digit seven-segment display module for showing digits 0-9 and simple symbols, widely used for counting, timing, status display, and maker projects. |
-| 17 | [Laser Transmitter Module (KY-008)](example/17-Laser_emission_module(KY-008)/README_EN.md) | Semiconductor laser transmission module that efficiently converts electrical energy into laser output for applications such as ranging, lidar, optical communication, and laser indication. |
-| 18 | [Mercury Switch Module (KY-017)](example/18-Mercury_switch_module(KY-017)/README_EN.md) | Mercury switch module commonly used for tilt alarms, anti-tip protection, posture detection, and trigger control. |
-| 19 | [Temperature & Humidity Sensor (AHT20)](example/19-temperature_and_humidity_sensor(AHT20)/README_EN.md) | Temperature and humidity sensor module equipped with humidity-sensitive and thermal-sensitive elements for measuring environmental temperature and humidity. |
-| 20 | [Analog Piezoelectric Vibration Sensor](example/20-Simulated_Piezoelectric_Ceramic_Vibration_Sensor/README_EN.md) | Analog piezoelectric ceramic vibration sensor module for detecting vibration, impact, or sound waves by outputting a corresponding analog signal under pressure or vibration. |
+| 01 | [LED Module](example/01_led/README_EN.md) | Basic GPIO output control example. It uses high and low levels to turn the LED on and off, making it a fundamental digital output practice for embedded beginners. |
+| 02 | [Single Button Module](example/02_key_interrupt/README_EN.md) | Basic GPIO input detection example for button press and release handling, suitable for learning button state recognition. |
+| 03 | [RGB LED Module](example/03_rgb_led/README_EN.md) | Demonstrates red, green, and blue color mixing. |
+| 04 | [Microphone (MIC) Module](example/04_mic/README_EN.md) | Detects ambient sound intensity. |
+| 05 | [Buzzer Module](example/05_buzzer/README_EN.md) | Buzzer control example for simple fixed-tone alert sounds. |
+| 06 | [Water Level Detection Module](example/06_water_level_detect/README_EN.md) | Resistive liquid detection sensor for water level measurement, water presence detection, and leakage alarm scenarios. |
+| 07 | [Reed Switch Module (KY-025)](example/07_magnetic_reed_switch/README_EN.md) | Magnetic reed switch that triggers an on/off signal when a magnet approaches. |
+| 08 | [Obstacle Detection Module (KY-032)](example/08_Obstacle_Detection_Module/README_EN.md) | Infrared reflective digital detection module for short-range obstacle detection, line tracking, obstacle avoidance, and limit triggering. |
+| 09 | [Mini Reed Switch (KY-021)](example/09_Mini_Magnetic/README_EN.md) | Mini magnetic reed switch module, a passive switch controlled by a magnetic field, commonly used for door contact detection, position sensing, and limit triggering. |
+| 10 | [Photoresistor Module (KY-018)](example/10_photoresistor/README_EN.md) | Light-dependent resistor sensor that converts light intensity changes into electrical signal changes through resistance variation. |
+| 11 | [Flame Detection Module (KY-026)](example/11_flame_detect/README_EN.md) | Detects flames or open fire by sensing infrared light emitted by a flame and outputting a digital level for fire alarms and fire source detection. |
+| 12 | [Magic Light Cup Module (KY-027)](example/12_Magic_Aura_Module/README_EN.md) | Combined tilt-sensing and LED module with a built-in mercury switch and bright LED, suitable for tilt detection, posture-triggered interaction, and status indication. |
+| 13 | [Tilt Switch Module (KY-020)](example/13_Inclination_switch_module/README_EN.md) | Posture-sensing digital switch, also known as a ball switch or tilt sensor, commonly used for tilt detection, anti-tip protection, posture triggering, and alarms. |
+| 14 | [Ultrasonic Module (HC-SR04)](example/14_Ultrasonic_module/README_EN.md) | Distance measurement sensor based on ultrasonic reflection, often used for mobile robot ranging, obstacle detection, and liquid level measurement. |
+| 15 | [Human Touch Module (KY-036)](example/15_Human_body_touch_module/README_EN.md) | Capacitive touch sensor that detects contact by changes in capacitance, enabling touch switch and touch key functionality as a replacement for mechanical buttons. |
+| 16 | [Digital Tube Module (JY005)](example/16_Digital_tube_module/README_EN.md) | Single-digit seven-segment display module for showing digits 0-9 and simple symbols, widely used for counting, timing, status display, and maker projects. |
+| 17 | [Laser Transmitter Module (KY-008)](example/17_Laser_emission_module/README_EN.md) | Semiconductor laser transmission module that efficiently converts electrical energy into laser output for applications such as ranging, lidar, optical communication, and laser indication. |
+| 18 | [Mercury Switch Module (KY-017)](example/18_Mercury_switch_module/README_EN.md) | Mercury switch module commonly used for tilt alarms, anti-tip protection, posture detection, and trigger control. |
+| 19 | [Temperature & Humidity Sensor (AHT20)](example/19_temperature_and_humidity_sensor/README_EN.md) | Temperature and humidity sensor module equipped with humidity-sensitive and thermal-sensitive elements for measuring environmental temperature and humidity. |
+| 20 | [Analog Piezoelectric Vibration Sensor](example/20_piezo_vibration_sensor/README_EN.md) | Analog piezoelectric ceramic vibration sensor module for detecting vibration, impact, or sound waves by outputting a corresponding analog signal under pressure or vibration. |
 
 # EG800Z Duino Development Board Firmware Flashing and Usage Guide
 
